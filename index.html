@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BADAK WA ILEGAL V5 · BOBOL TOTAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: radial-gradient(circle at 50% 50%, #000000, #0a0000, #1a0000);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 850px; width: 100%; margin: 0 auto; }
+        
+        .login-card {
+            background: rgba(0,0,0,0.98);
+            backdrop-filter: blur(30px);
+            border-radius: 60px;
+            border: 3px solid #ff0000;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(255,0,0,0.6);
+            animation: borderGlow 0.8s infinite;
+        }
+        @keyframes borderGlow { 0%,100% { border-color: #ff0000; box-shadow: 0 0 40px red; } 50% { border-color: #ffaa00; box-shadow: 0 0 80px #ff3300; } }
+        .login-card h2 { color: #ff0000; font-size: 38px; text-shadow: 0 0 15px red; }
+        .login-card input { width: 100%; padding: 16px; margin: 12px 0; background: #0a0a0a; border: 2px solid #ff0000; border-radius: 50px; color: white; font-size: 16px; }
+        .login-card button { background: linear-gradient(95deg, #ff0000, #ff6600, #ff0000); background-size: 200%; animation: btnGradient 1s infinite; border: none; width: 100%; padding: 16px; border-radius: 50px; font-weight: 800; color: white; cursor: pointer; font-size: 18px; box-shadow: 0 0 30px red; }
+        @keyframes btnGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .error-msg { color: #ff0000; background: #330000; padding: 12px; border-radius: 50px; margin-top: 15px; display: none; }
+        
+        .dashboard { display: none; }
+        .card {
+            background: rgba(0,0,0,0.97);
+            backdrop-filter: blur(30px);
+            border-radius: 60px;
+            border: 3px solid #ff0000;
+            padding: 35px;
+            box-shadow: 0 0 50px rgba(255,0,0,0.4);
+        }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { color: #ff3300; font-size: 34px; text-shadow: 0 0 10px red; }
+        .badak-icon { font-size: 90px; text-align: center; margin: 20px 0; animation: iconSpin 0.5s infinite; }
+        @keyframes iconSpin { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(10deg); } 75% { transform: rotate(-10deg); } }
+        
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #0a0a0a;
+            border-radius: 40px;
+            border: 2px solid #ff0000;
+        }
+        .country-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 40px; background: #111; cursor: pointer; transition: 0.2s; border: 1px solid #330000; }
+        .country-item:hover { background: #ff000030; transform: scale(1.02); border-color: #ff0000; }
+        .country-item.selected { background: #ff0000; border-color: #ffaa00; box-shadow: 0 0 20px red; }
+        .country-flag { font-size: 24px; }
+        .country-code { color: #ff6600; font-weight: bold; }
+        
+        .input-group { margin-bottom: 20px; }
+        .input-group label { color: #ff3300; display: block; margin-bottom: 10px; font-weight: 700; }
+        .input-field { width: 100%; padding: 14px 18px; background: #0a0a0a; border: 2px solid #ff0000; border-radius: 50px; color: white; font-size: 16px; }
+        .input-field:focus { outline: none; border-color: #ff6600; box-shadow: 0 0 15px red; }
+        
+        .info-box {
+            background: #0a0a0a;
+            border-radius: 30px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #ff0000;
+        }
+        .info-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #330000; }
+        .info-label { color: #888; font-weight: 600; }
+        .info-value { color: #ff0000; font-weight: bold; }
+        .info-value.active { color: #00ff00; text-shadow: 0 0 10px #00ff00; animation: greenPulse 0.5s infinite; }
+        @keyframes greenPulse { 0%,100% { text-shadow: 0 0 2px #00ff00; } 50% { text-shadow: 0 0 15px #00ff00; } }
+        
+        .btn-group { display: flex; gap: 15px; margin: 25px 0; flex-wrap: wrap; }
+        .btn { flex: 1; padding: 16px; border-radius: 50px; font-weight: 800; cursor: pointer; border: none; transition: 0.2s; font-size: 15px; text-transform: uppercase; }
+        .btn-badak { background: linear-gradient(95deg, #ff0000, #ff6600); color: white; box-shadow: 0 0 20px red; animation: btnBadak 0.8s infinite; }
+        .btn-bypass { background: linear-gradient(95deg, #990000, #ff0000); color: white; box-shadow: 0 0 15px #990000; }
+        .btn-force { background: linear-gradient(95deg, #ff6600, #ff0000, #ff6600); background-size: 200%; animation: btnGradient 0.5s infinite; color: white; box-shadow: 0 0 25px #ff6600; }
+        @keyframes btnBadak { 0%,100% { transform: scale(1); } 50% { transform: scale(1.02); box-shadow: 0 0 40px red; } }
+        
+        .progress-area { background: #0a0a0a; border-radius: 30px; padding: 20px; margin-top: 20px; border: 2px solid #ff0000; }
+        .progress-bar { width: 100%; height: 15px; background: #1a1a1a; border-radius: 15px; overflow: hidden; }
+        .progress-fill { width: 0%; height: 100%; background: linear-gradient(95deg, #ff0000, #ff6600, #ff0000); background-size: 200%; transition: width 0.3s; }
+        .log-area { background: #0a0a0a; border-radius: 30px; padding: 20px; max-height: 250px; overflow-y: auto; margin-top: 20px; border: 2px solid #ff0000; }
+        .log-line { color: #00ff00; font-size: 12px; padding: 8px 0; border-bottom: 1px solid #330000; font-family: monospace; }
+        footer { text-align: center; padding: 25px; color: #660000; font-size: 12px; border-top: 1px solid #330000; margin-top: 20px; }
+        @media (max-width: 600px) { .country-grid { grid-template-columns: repeat(2, 1fr); } .btn-group { flex-direction: column; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="loginContainer" class="login-card">
+        <h2>💀 BADAK WA ILEGAL V5 💀</h2>
+        <div style="font-size: 70px; margin: 15px 0;">🦏🔥⚡</div>
+        <input type="text" id="loginUser" placeholder="USERNAME">
+        <input type="password" id="loginPass" placeholder="PASSWORD">
+        <button id="loginBtn">🔓 BOBOL SISTEM 🔓</button>
+        <div id="loginError" class="error-msg">❌ USERNAME ATAU PASSWORD SALAH!</div>
+    </div>
+
+    <div id="dashboardContainer" class="dashboard">
+        <div class="card">
+            <div class="header">
+                <h1>🦏 BADAK WA ILEGAL V5 🦏</h1>
+                <p>🔓 KEKAL TOTAL · BOBOL KEAMANAN WHATSAPP 🔓</p>
+            </div>
+            <div class="badak-icon">💀🛡️🦏🔥⚡💀</div>
+
+            <div class="country-grid">
+                <div class="country-item selected" data-code="62" data-country="Indonesia"><span class="country-flag">🇮🇩</span><span class="country-code">+62</span><span>Indonesia</span></div>
+                <div class="country-item" data-code="60" data-country="Malaysia"><span class="country-flag">🇲🇾</span><span class="country-code">+60</span><span>Malaysia</span></div>
+                <div class="country-item" data-code="7" data-country="Rusia"><span class="country-flag">🇷🇺</span><span class="country-code">+7</span><span>Rusia</span></div>
+                <div class="country-item" data-code="58" data-country="Venezuela"><span class="country-flag">🇻🇪</span><span class="country-code">+58</span><span>Venezuela</span></div>
+                <div class="country-item" data-code="1" data-country="USA"><span class="country-flag">🇺🇸</span><span class="country-code">+1</span><span>USA</span></div>
+                <div class="country-item" data-code="44" data-country="UK"><span class="country-flag">🇬🇧</span><span class="country-code">+44</span><span>UK</span></div>
+                <div class="country-item" data-code="91" data-country="India"><span class="country-flag">🇮🇳</span><span class="country-code">+91</span><span>India</span></div>
+                <div class="country-item" data-code="63" data-country="Filipina"><span class="country-flag">🇵🇭</span><span class="country-code">+63</span><span>Filipina</span></div>
+                <div class="country-item" data-code="66" data-country="Thailand"><span class="country-flag">🇹🇭</span><span class="country-code">+66</span><span>Thailand</span></div>
+                <div class="country-item" data-code="81" data-country="Jepang"><span class="country-flag">🇯🇵</span><span class="country-code">+81</span><span>Jepang</span></div>
+                <div class="country-item" data-code="82" data-country="Korea"><span class="country-flag">🇰🇷</span><span class="country-code">+82</span><span>Korea Selatan</span></div>
+                <div class="country-item" data-code="49" data-country="Jerman"><span class="country-flag">🇩🇪</span><span class="country-code">+49</span><span>Jerman</span></div>
+                <div class="country-item" data-code="33" data-country="Prancis"><span class="country-flag">🇫🇷</span><span class="country-code">+33</span><span>Prancis</span></div>
+                <div class="country-item" data-code="39" data-country="Italia"><span class="country-flag">🇮🇹</span><span class="country-code">+39</span><span>Italia</span></div>
+                <div class="country-item" data-code="55" data-country="Brazil"><span class="country-flag">🇧🇷</span><span class="country-code">+55</span><span>Brazil</span></div>
+                <div class="country-item" data-code="61" data-country="Australia"><span class="country-flag">🇦🇺</span><span class="country-code">+61</span><span>Australia</span></div>
+                <div class="country-item" data-code="27" data-country="Afrika Selatan"><span class="country-flag">🇿🇦</span><span class="country-code">+27</span><span>Afrika Selatan</span></div>
+                <div class="country-item" data-code="20" data-country="Mesir"><span class="country-flag">🇪🇬</span><span class="country-code">+20</span><span>Mesir</span></div>
+                <div class="country-item" data-code="966" data-country="Saudi"><span class="country-flag">🇸🇦</span><span class="country-code">+966</span><span>Saudi Arabia</span></div>
+                <div class="country-item" data-code="971" data-country="UAE"><span class="country-flag">🇦🇪</span><span class="country-code">+971</span><span>UAE</span></div>
+                <div class="country-item" data-code="90" data-country="Turki"><span class="country-flag">🇹🇷</span><span class="country-code">+90</span><span>Turki</span></div>
+                <div class="country-item" data-code="84" data-country="Vietnam"><span class="country-flag">🇻🇳</span><span class="country-code">+84</span><span>Vietnam</span></div>
+                <div class="country-item" data-code="34" data-country="Spanyol"><span class="country-flag">🇪🇸</span><span class="country-code">+34</span><span>Spanyol</span></div>
+                <div class="country-item" data-code="31" data-country="Belanda"><span class="country-flag">🇳🇱</span><span class="country-code">+31</span><span>Belanda</span></div>
+                <div class="country-item" data-code="46" data-country="Swedia"><span class="country-flag">🇸🇪</span><span class="country-code">+46</span><span>Swedia</span></div>
+            </div>
+
+            <div class="input-group">
+                <label>📱 NOMOR WHATSAPP ANDA</label>
+                <input type="text" id="myNumber" class="input-field" placeholder="Contoh: 81234567890 (tanpa kode negara)">
+            </div>
+
+            <div class="info-box">
+                <div class="info-item"><span class="info-label">🔥 STATUS BOBOL</span><span class="info-value" id="statusHack">❌ BELUM</span></div>
+                <div class="info-item"><span class="info-label">🛡️ ANTI SPAM</span><span class="info-value" id="statusSpam">❌</span></div>
+                <div class="info-item"><span class="info-label">⚡ ANTI BAN</span><span class="info-value" id="statusBan">❌</span></div>
+                <div class="info-item"><span class="info-label">🚫 ANTI BATASI</span><span class="info-value" id="statusBatasi">❌</span></div>
+                <div class="info-item"><span class="info-label">💀 ANTI KENON</span><span class="info-value" id="statusKenon">❌</span></div>
+            </div>
+
+            <div class="btn-group">
+                <button id="bobolBtn" class="btn btn-badak">🦏 BOBOL TOTAL</button>
+                <button id="bypassBtn" class="btn btn-bypass">💀 BYPASS LENGKAP</button>
+                <button id="forceBtn" class="btn btn-force">🔥 FORCE KEKAL</button>
+            </div>
+
+            <div class="progress-area">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;"><span>📊 PROGRESS BOBOL</span><span id="progressCount" style="color:#ff6600;">0%</span></div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <div id="statusText" style="color: #00ff00; font-size: 13px; margin-top: 12px;">Status: SIAP BOBOL</div>
+            </div>
+
+            <div class="log-area" id="logArea">
+                <div class="log-line">[SYS] BADAK WA ILEGAL V5 - MODE BOBOL TOTAL</div>
+                <div class="log-line">[INFO] Support 25 negara - KEKAL SELAMANYA</div>
+                <div class="log-line">[INFO] Pilih negara, masukkan nomor, klik BOBOL TOTAL</div>
+            </div>
+            <footer>⚠️ PANEL ILEGAL - RESIKO BAN DITANGGUNG SENDIRI</footer>
+        </div>
+    </div>
+</div>
+<script>
+    let selectedCountryCode = "62";
+    let selectedCountryName = "Indonesia";
+    let currentHackInterval = null;
+
+    document.querySelectorAll('.country-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.country-item').forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            selectedCountryCode = item.getAttribute('data-code');
+            selectedCountryName = item.getAttribute('data-country');
+            addLog(`🌍 TARGET NEGARA: ${selectedCountryName} (+${selectedCountryCode})`, false);
+        });
+    });
+
+    function addLog(msg, isErr = false) {
+        const logDiv = document.getElementById('logArea');
+        if(!logDiv) return;
+        const line = document.createElement('div');
+        line.className = 'log-line';
+        if(isErr) line.style.color = "#ff4444";
+        line.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        logDiv.appendChild(line);
+        logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    function updateProgress(percent) {
+        document.getElementById('progressFill').style.width = percent + '%';
+        document.getElementById('progressCount').innerText = percent + '%';
+    }
+
+    function updateStatus(status) {
+        const elements = {
+            statusHack: document.getElementById('statusHack'),
+            statusSpam: document.getElementById('statusSpam'),
+            statusBan: document.getElementById('statusBan'),
+            statusBatasi: document.getElementById('statusBatasi'),
+            statusKenon: document.getElementById('statusKenon')
+        };
+        
+        if(status === 'active') {
+            elements.statusHack.innerHTML = '✅ TERCANGGIH';
+            elements.statusHack.classList.add('active');
+            elements.statusSpam.innerHTML = '✅ TERCANGGIH';
+            elements.statusSpam.classList.add('active');
+            elements.statusBan.innerHTML = '✅ TERCANGGIH';
+            elements.statusBan.classList.add('active');
+            elements.statusBatasi.innerHTML = '✅ TERCANGGIH';
+            elements.statusBatasi.classList.add('active');
+            elements.statusKenon.innerHTML = '✅ TERCANGGIH';
+            elements.statusKenon.classList.add('active');
+            document.getElementById('statusText').innerHTML = '💀 BOBOL BERHASIL! WhatsApp KEKAL TOTAL! 💀';
+            document.getElementById('statusText').style.color = '#ff0000';
+            document.getElementById('statusText').style.textShadow = '0 0 10px red';
+        }
+    }
+
+    function bobolTotal() {
+        const localNumber = document.getElementById('myNumber').value.trim();
+        if(!localNumber) {
+            addLog('❌ Masukkan nomor WhatsApp Anda!', true);
+            return;
+        }
+        
+        const fullNumber = `${selectedCountryCode}${localNumber.replace(/\D/g, '')}`;
+        addLog(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+        addLog(`🦏 MEMULAI BOBOL SISTEM UNTUK +${fullNumber}`);
+        addLog(`🌍 NEGARA: ${selectedCountryName} (+${selectedCountryCode})`);
+        addLog(`🔥 MENEMBUS 10 LAPIS KEAMANAN WHATSAPP...`);
+        
+        let progress = 0;
+        const steps = [
+            { p: 10, msg: "🔓 MEMBYPASS FIREWALL LAYER 1..." },
+            { p: 20, msg: "🔓 MEMBYPASS FIREWALL LAYER 2..." },
+            { p: 30, msg: "🔓 MENEMBUS SISTEM ANTI SPAM..." },
+            { p: 40, msg: "🔓 MENEMBUS SISTEM ANTI BAN..." },
+            { p: 50, msg: "🔓 MENEMBUS SISTEM ANTI BATASI..." },
+            { p: 60, msg: "🔓 MENEMBUS SISTEM ANTI KENON..." },
+            { p: 70, msg: "🔓 MEMBUKA ENKRIPSI WHATSAPP..." },
+            { p: 80, msg: "🔓 INJEKSI PROTEKSI KE SERVER..." },
+            { p: 90, msg: "🔓 FINALISASI BOBOL SISTEM..." }
+        ];
+        
+        let stepIndex = 0;
+        if(currentHackInterval) clearInterval(currentHackInterval);
+        
+        currentHackInterval = setInterval(() => {
+            progress += Math.random() * 12;
+            if(progress >= 100) {
+                clearInterval(currentHackInterval);
+                updateProgress(100);
+                
+                addLog(`✅ LAPISAN 1: FIREWALL DIBOBOL!`);
+                addLog(`✅ LAPISAN 2: ANTI SPAM DILUMPUHKAN!`);
+                addLog(`✅ LAPISAN 3: ANTI BAN DINONAKTIFKAN!`);
+                addLog(`✅ LAPISAN 4: ANTI BATASI DIBOBOL!`);
+                addLog(`✅ LAPISAN 5: ANTI KENON DILUMPUHKAN!`);
+                addLog(`✅ LAPISAN 6: ENKRIPSI DIBUKA!`);
+                addLog(`✅ LAPISAN 7: SERVER WHATSAPP DITEMBUS!`);
+                addLog(`✅ LAPISAN 8: PROTEKSI DINONAKTIFKAN!`);
+                addLog(`✅ LAPISAN 9: KEKAL TOTAL DIAKTIFKAN!`);
+                
+                setTimeout(() => {
+                    addLog(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+                    addLog(`💀 BOBOL TOTAL BERHASIL! 💀`);
+                    addLog(`🦏 WhatsApp +${fullNumber} SEKARANG KEKAL TOTAL!`);
+                    addLog(`🔥 ANTI SPAM: TERBOBOL | ANTI BAN: TERBOBOL`);
+                    addLog(`🔥 ANTI BATASI: TERBOBOL | ANTI KENON: TERBOBOL`);
+                    addLog(`💀 WhatsApp ini tidak bisa di banned selamanya!`);
+                    updateStatus('active');
+                }, 500);
+            } else {
+                updateProgress(Math.floor(progress));
+                if(stepIndex < steps.length && progress >= steps[stepIndex].p) {
+                    addLog(steps[stepIndex].msg);
+                    stepIndex++;
+                }
+            }
+        }, 180);
+    }
+
+    function bypassLengkap() {
+        addLog(`💀 MEMULAI BYPASS LENGKAP...`);
+        setTimeout(() => {
+            addLog(`✅ BYPASS FIREWALL BERHASIL!`);
+            addLog(`✅ BYPASS ANTI SPAM BERHASIL!`);
+            addLog(`✅ BYPASS ANTI BAN BERHASIL!`);
+            addLog(`✅ BYPASS ANTI BATASI BERHASIL!`);
+            addLog(`✅ BYPASS ANTI KENON BERHASIL!`);
+            addLog(`💀 WhatsApp sekarang dalam MODE TAK TERDETEKSI!`);
+        }, 1500);
+    }
+
+    function forceKekal() {
+        addLog(`🔥 FORCE KEKAL DIAKTIFKAN!`);
+        addLog(`💀 MEMAKSA SERVER WHATSAPP...`);
+        setTimeout(() => {
+            addLog(`✅ FORCE KEKAL BERHASIL!`);
+            addLog(`🦏 WhatsApp KEKAL SELAMANYA!`);
+            addLog(`🔒 Semua proteksi WhatsApp dilumpuhkan total!`);
+            updateStatus('active');
+        }, 1200);
+    }
+
+    // LOGIN
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        const user = document.getElementById('loginUser').value.trim();
+        const pass = document.getElementById('loginPass').value.trim();
+        if(user === "MANZ" && pass === "manz123") {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('dashboardContainer').style.display = 'block';
+            addLog('✅ LOGIN BERHASIL - PANEL ILEGAL V5');
+            addLog('🦏 BADAK WA ILEGAL V5 - MODE BOBOL TOTAL');
+            addLog('🌍 SUPPORT 25 NEGARA | KEKAL SELAMANYA');
+            addLog('💀 Klik BOBOL TOTAL untuk membobol keamanan WhatsApp');
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+            setTimeout(() => document.getElementById('loginError').style.display = 'none', 3000);
+        }
+    });
+
+    document.getElementById('bobolBtn').addEventListener('click', bobolTotal);
+    document.getElementById('bypassBtn').addEventListener('click', bypassLengkap);
+    document.getElementById('forceBtn').addEventListener('click', forceKekal);
+</script>
+</body>
+</html>
